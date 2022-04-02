@@ -8,6 +8,8 @@ authors = ["ksinin <maksim.pronin1996@gmail.com>"]
 python = "^3.8"
 Django = "^4.0.3"
 psycopg2 = "^2.9.3"
+social-auth-app-django = "^5.0.0"
+django-crispy-forms = "^1.14.0"
 
 [tool.poetry.dev-dependencies]
 
