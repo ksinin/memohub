@@ -10,7 +10,7 @@ def main_view(request):
         mems = Mem.objects.filter(user_id=request.user.id)
         return render(
             request,
-            "main.html",
+            "../templates/main.html",
             {"mems": mems, "username": request.user.username}
         )
 
