@@ -1,0 +1,9 @@
+.idea
+.lets
+data/*
+nohup.out
+__pycache__
+*.pyc
+.venv/
+README.md
+.gitignore

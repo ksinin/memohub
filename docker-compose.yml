@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: memohub_db
+    image: postgres:14-alpine
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data/postgresql:/var/lib/postgresql/data
+    env_file: &default-env-file
+      - .env
+
+  app:
+    container_name: memohub
+    build:
+      context: .
+    ports:
+      - 8000:8000
+    volumes:
+      - ./src:/src
+    command: sh /internal/start_app.sh
+    entrypoint: /internal/wait-for-it.sh db:5432 --timeout=0 --
+    depends_on:
+      - db
+    env_file: *default-env-file
