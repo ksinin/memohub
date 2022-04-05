@@ -139,7 +139,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-SOCIAL_AUTH_TELEGRAM_BOT_TOKEN = "479826744:AAG_4YBu6uWX_Bs7DuP5pgjUlsactkxGkeY"
+SOCIAL_AUTH_TELEGRAM_BOT_TOKEN = ""
 
 LOGIN_REDIRECT_URL = reverse_lazy('main')
 
