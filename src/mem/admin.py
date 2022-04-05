@@ -1,6 +1,10 @@
 from django.contrib import admin
+from django.contrib.auth import get_user_model
+from django.contrib.auth.admin import UserAdmin
 
-# Register your models here.
-from mem.models import Mem
+User = get_user_model()
 
-admin.site.register(Mem)
+
+@admin.register(User)
+class UserAdmin(UserAdmin):
+    pass
