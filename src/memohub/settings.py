@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "crispy_forms",
     "mem",
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -130,26 +131,22 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-SOCIAL_AUTH_TELEGRAM_BOT_TOKEN = "5265281428:AAGQ3uO13ZwMPqx3YI_61MlyTF464yjfz8g"
+SOCIAL_AUTH_TELEGRAM_BOT_TOKEN = "479826744:AAG_4YBu6uWX_Bs7DuP5pgjUlsactkxGkeY"
 
-# Default profile url
-LOGIN_REDIRECT_URL = reverse_lazy('profile')
+LOGIN_REDIRECT_URL = reverse_lazy('main')
 
 # Supported Auth Backends
-#AUTHENTICATION_BACKENDS = (
-#    'social_core.backends.telegram.TelegramAuth',
-#    'django.contrib.auth.backends.ModelBackend',
-#)
-
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+AUTHENTICATION_BACKENDS = (
+   'social_core.backends.telegram.TelegramAuth',
+   'django.contrib.auth.backends.ModelBackend',
+)
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
-CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
-
-LOGIN_REDIRECT_URL = '/'

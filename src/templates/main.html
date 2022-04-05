@@ -3,25 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <title>Hello {{ username }}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    </head>
-    <body>
-    <div class="container">
-  <nav class="navbar navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Hello {{ username }}</a>
-  </nav>
-</div>
-
-        {% for mem in mems %}
-        <div class="card" style="width: 18rem;">
-      <img class="card-img-top" src="{{ mem.url }}" alt="Card image cap">
-      <div class="card-body">
-        <p class="card-text">{{ mem.description }}.</p>
-        <p class="card-subtitle mb-2 text-muted">{{ mem.datetime_created }}.</p>
-      </div>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+          crossorigin="anonymous">
+</head>
+<body>
+<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAA+VBMVEUAAAAbfgn///8AAAQcgQkVQw8EAAYSVQgVNBEaVxEAdgD///4aewDh6uLn7+X7+/tra2vf39/09PShoaGLi4svLy8AeQDq6uouiB66urqFhYUpKSlPlUXZ2dliYmKmxqHx9+8fHx8AcgDNzc1XV1eXl5eoqKhERER1dXVNTU01iSixy6s2NjawsLC2z7QLCwsWFhbFxcXD2salzKAPKhAaTxIaQBUEEQMfbBMSIRAZXxN6rXafzJjI38G11rBCkDlopWLa6thlp15Ul0+Vuo7Y6tOPvIdFiz0leRE4gijp+erO7Mq708F+pnTP4tGDsISBtXeRsY1zn2n3hO5tAAAId0lEQVR4nO2ba1vaSBSAQ5ztdpNIIEhCkDsqKqhI99ayVClKu27Xtvv/f8zOzJmZTLja1qTG57xfdpgkrC9zPzk1DARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBECSb7LxIgp0frRWx8+tvPyfAb79f/Ggzwc4ff5Lc40NI7ifjabTj6zcJ+HHHP18+suFhkRE0VtSdbHjsZRItCIq/PK6gcWRyLrWqdgB1Bz/I8JHbUBh62gA/MJ+VYQls3OOo6ux5GR4Kna6qKQfP0zAYyJqqK6p6z8vQLMia0HxehnvSR86mF95zNfTKUHEsK8zBhseyaGhWoaKrKsrPw7CqhEL+uectGxaKQRDGdziZNHS5g5p5pOGFnFuL+1k3hG6qZlLTA6MjVRFo3Tabhmw2HZgLhtE4pbuCaGuXTUOvF+uk3FAblpS9LBoeawIlw6hHnwJmGOqCZnSgypKhGwl0jYbWZMW2Yezzz8FRKYQLhxk39AbRtAKGvA97dApqH4nfYL0hcXzf2i5O+H3W2juTMoTzRJ3/p1tXhryT1vmN0IjrDJ1Op1Mb9//aruh0KuNxc/L2yknXUJ8y9y6l4ZBvcOhWoHEojlTt1YbO9XQ6bXnmpLNV8Oo279Ffy6ulZSjm0kY0xbgnsHGjc2m7yAtB4MnxKXfjC4b+NVyeWNsNW/zOVuqGJWUYDpVhObZWbDJ8Z5s2vXy+3fAUDPO1Nf05KcODhppx9oz1hq58bLGXzlrcsL99HHaE4fu02/CiKCV68nhR1gwDSrFeX7dafIWhnwfD1GYaMcU0VPypKEYfM9zn84t7GYYnFP1EvGhYA8PmAwyn/Munp6kbngjDQ80QRqS34rD/HYb3/Mt3K2kZHkpDQ8WBZUR4IAOLZ3BrW4s4LhpeQd97gKE1SrkNhWFB2tBVcN9T8yaMUq80NIxh4dKL4hqLhu8fbOinbVhShnDSDQ1lSLfZbSi69W6X7XfO1hkS2obQS3OOT7c3vrxMGKrI23AChhV+Y2fJM6moPjUcsOHnViPDg+gHkDOqChKvMbyxfDKf5m9vHH7dsZhEh5UJL3UsYr0Vhv74Np+fXPskNUODbdZYxK1sRob7QUxx7Wpxygxtc955f+uatu3efiBs/pm27u5at7RDOrVbWmq13jpWHww/vHLpb+K2Jn87qRk2TDjn64ZGI3iQYWWXXrXNm9mduPMfOiL9OWtXM88NYaEfOdY5L+yet/hF0759TxI1PIsMhwHEaqQhTJ0NuRWgDbx2HErDj3cm/N2mO/dzflN0SLJsqLDNEXFSMqTt6fY0QxHnL3eLcA4uHkaPrTC04385/bsJyIwqWhvKcag7jv0kDash45KHJwr1M3Y6aodQpxb63h79eNZoa49tN8xXSOV+lWFz0ZDekKShzrC3KcwdY5MhFPKn5BQMz3M5ZXhO/FeiG0e3ejMnJcOvYJ2h1/x3wks2nV9O+RbU1g37jjQ07+ef7sUvcuNnxrD1qWJdQTF/6oNhrA2byvB+RvzZLhh+1BbFJ21o0xMwydH5xRa9NC96pmboW2BoX1uE+GOovbcSNCyxk1/gFVbUfUW2iTR8Rc/4pCnb8GqNIb98RX8LIlo5n6Th42SbyF5K96U5pylmGl8ELGK9VBpO+XNiG95KchzKbBNtKWiYj2Moeqm90vCeP2elYCizTapRVfhIhmKmsdly59S8+DhkbUj7Kcymd1aChsvZJoNvyDbZaHhPV3x/5kpD2NO0WCSKXO2KcZiCofdd2Sa6oR/1UjGP/O0Q0TcjQ3dMV4hoLk3B0FQhim/JNtENSV8ZQh80b4j/WZw5qCFcNqfXvv8uD5uafpLjUIXzZTcdfku2SWSor4eVkegfo5EnNmhNR7ShbQaj0a4ojlMx/K5sE2nYjxmS5U1231k+W5j5WpL70uiVjHjBG73A+Ipsk9WG/lx+ldqVn68y7Cd7elL/n0v+ln5Ftkmh63leaWO2yUpDx38nv8ymRwlu+dERi7zGXeyQn362SUH+lV09x3yrITtbEBHfZhZf4GtGylC9J7HnVkqGkG1yqT5CLkY1ekesJ9QsRaKkIf2g2jDn/ydOgfnZlYpiwAQ7/cKj5LRx3+aSjdNohmw2Xcw2KWgvwTdkmzjiOM/nUhhozJA4n3epmTeZWWIXTg2hXSed+S419KZzJ+FYm55tcrKUbdJeE0xcestNPvcZLPpJrnnxpsJu6dS+9PufTv1c5YbXjh1fFHwye0Xvqi2+cUw42+RiIdukGhM0A7VELmUqsOQDkX4ARTjU0jOgKIpaUfBZQV5K2DCWbVKIZ5sMu3HDh2SbqCj+N5KooTs4M2OGPdF0x4USqNe3G34vSRlC2BcCo92uNIQu7GkvMLJruDrbBLQg0g2NuCZT4SkbLmebeD2VqQAFOCeGWjmLhgfRMhFeKEPou0N+I9wgz1gZNFyZbaIb7mXcsGGobJOBXBTL4pwBmzUYkzLqmCFDlYsh0xLrWi5GqLUb2MoTRhYNxdoXyzaBduOn/wNX67GZMtyYbQLroVuiO3IxNuVj2TNcnW0i2tXrduvQhGEGDaNsk+PFbJODxTRv7V8pZsgwylTYX5Ft0nBjhnUV+8+kIT/esyOTnotxGTOMouDZNGT//ncp20Q7MJrrMxWesuFCtsmxsZBt0lOKbhg99SJD/1pdzzYprco2KR/V2bgsdve0p3Zev0lGkZAPLx/Z8PioRDnip6JGlyUhGu0S50jGvHtV+qkQjw/v7LwhifDh9yRf418M9rffJHn9UyK8vHgaiQqUFy92EoB+748WS5gn04AIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiCp8z8DCfzuObq5oAAAAABJRU5ErkJggg=="
+                 alt=""
+                 width="60" height="40" class="d-inline-block align-text-top">
+        </a>
+        <div class="d-flex">
+            {% if not is_authenticated %}
+                <script
+                        async
+                        src="https://telegram.org/js/telegram-widget.js?18"
+                        data-telegram-login="feelmypower_bot" data-size="large"
+                        data-auth-url="http://8a25-80-249-92-5.ngrok.io/auth/complete/telegram"
+                        data-request-access="write">
+                </script>
+            {% else %}
+                <h1>{{ username }}</h1>
+                <button class="btn btn-primary"
+                        onclick="location.href={% url 'logout' %}">Logout
+                </button>
+            {% endif %}
+        </div>
     </div>
-    {% endfor %}
+</nav>
+<div class="container">
 
+    {% if is_authenticated %}
+        {% for mem in mems %}
+            {% if forloop.counter0|divisibleby:3 %}
+                <div class="row text-center"> {% endif %}
+            <div class="col-md-4">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="{{ mem.url }}"
+                         alt="Card image cap">
+                    <div class="card-body">
+                        <p class="card-text">{{ mem.description }}.</p>
+                        <p class="card-subtitle mb-2 text-muted">{{ mem.datetime_created }}.</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <h1> No memes - no penis!</h1>
+    {% endif %}
 
+    </div>
 </body>
 </html>

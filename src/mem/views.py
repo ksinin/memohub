@@ -1,17 +1,23 @@
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from .models import Mem
+from django.contrib.auth import logout
+from django.shortcuts import redirect
 
-# Create your views here.
-
-@login_required(login_url="login/")
 def main_view(request):
-    if request.method == "GET":
+    template = "../templates/main.html"
+    context = {
+        "is_authenticated": False
+    }
+    if request.user.is_authenticated:
         mems = Mem.objects.filter(user_id=request.user.id)
-        return render(
-            request,
-            "../templates/main.html",
-            {"mems": mems, "username": request.user.username}
-        )
+        context = {
+            "mems": mems,
+            "username": request.user.username,
+            "is_authenticated": True,
+        }
+    return render(request, template, context)
 
-    return ""
+
+def logout_view(request):
+    logout(request)
+    return redirect('main')
