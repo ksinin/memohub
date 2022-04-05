@@ -7,7 +7,7 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - ./data/postgresql:/var/lib/postgresql/data
+      - memohub_postgres_data:/var/lib/postgresql/data
     env_file: &default-env-file
       - .env
 
@@ -24,3 +24,6 @@ services:
     depends_on:
       - db
     env_file: *default-env-file
+
+volumes:
+  memohub_postgres_data:
