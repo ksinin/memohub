@@ -1,14 +1,18 @@
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
+from django.shortcuts import render
 from django.views import View
-from django.shortcuts import render, redirect
-from django.contrib.auth import login
+
 from mem.forms import UserCreationForm
+from .models import Mem
 
 
 class Register(View):
 
     template_name = 'registration/register.html'
 
-    def ger(self, reauest):
+    def get(self, request):
         context = {
             'form': UserCreationForm()
         }
@@ -24,9 +28,18 @@ class Register(View):
             user = authenticate(username=username, password=password)
             login(request, user)
             return redirect('home')
-        context = {
-            'form': form
-        }
+        context = {'form': form}
         return render(request, self.template_name, context)
 
 
+@login_required(login_url="login/")
+def main_view(request):
+    if request.method == "GET":
+        mems = Mem.objects.filter(user_id=request.user.id)
+        return render(
+            request,
+            "../templates/main.html",
+            {"mems": mems, "username": request.user.username}
+        )
+
+    return ""
