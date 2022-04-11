@@ -27,7 +27,7 @@ class Register(View):
             password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=password)
             login(request, user)
-            return redirect('home')
+            return redirect('/')
         context = {'form': form}
         return render(request, self.template_name, context)
 
@@ -38,7 +38,7 @@ def main_view(request):
         mems = Mem.objects.filter(user_id=request.user.id)
         return render(
             request,
-            "../templates/main.html",
+            "../templates/home.html",
             {"mems": mems, "username": request.user.username}
         )
 

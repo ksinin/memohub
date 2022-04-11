@@ -18,10 +18,11 @@ from django.contrib.auth import views
 from django.urls import path, include
 from django.views.generic import TemplateView
 from mem.views import main_view
+from django.conf.urls.static import static
+import memohub.settings as settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
-
-    path('mem/', include('mem.urls'))
-]
+    path('mem/', include('mem.urls')),
+] + static(settings.STATIC_URL, document_root='/src/static')

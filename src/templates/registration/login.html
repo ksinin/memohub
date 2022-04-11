@@ -8,11 +8,11 @@
         <p>{{ form.errors.error }}</p>
     {% endif %}
 
-    <form action="{% url 'login %}" method="post">
+    <form action="{% url 'login' %}" method="post">
     {{ form }}
     {% csrf_token %}
     <button type="submit" class="btn-success"></button>
     </form>
 
-    <a href="{% url 'password reset' %}">Forgot password?</a>
+<a href="{% url 'password_reset' %}">Forgot password?</a>
 {% endblock %}

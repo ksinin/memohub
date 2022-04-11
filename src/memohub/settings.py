@@ -133,6 +133,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_URL = 'static/'
 
 # Default primary key field type
@@ -143,7 +145,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SOCIAL_AUTH_TELEGRAM_BOT_TOKEN = "5265281428:AAGQ3uO13ZwMPqx3YI_61MlyTF464yjfz8g"
 
 # Default profile url
-LOGIN_REDIRECT_URL = reverse_lazy('profile')
+# LOGIN_REDIRECT_URL = reverse_lazy('profile')
 
 # Supported Auth Backends
 #AUTHENTICATION_BACKENDS = (
@@ -151,9 +153,5 @@ LOGIN_REDIRECT_URL = reverse_lazy('profile')
 #    'django.contrib.auth.backends.ModelBackend',
 #)
 
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
-
-LOGIN_REDIRECT_URL = '/'
