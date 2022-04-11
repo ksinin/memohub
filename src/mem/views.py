@@ -8,8 +8,7 @@ from mem.forms import UserCreationForm
 from .models import Mem
 
 
-class Register(View):
-
+class RegisterView(View):
     template_name = 'registration/register.html'
 
     def get(self, request):
@@ -32,14 +31,12 @@ class Register(View):
         return render(request, self.template_name, context)
 
 
-@login_required(login_url="login/")
-def main_view(request):
-    if request.method == "GET":
-        mems = Mem.objects.filter(user_id=request.user.id)
-        return render(
-            request,
-            "../templates/home.html",
-            {"mems": mems, "username": request.user.username}
-        )
+class HomeMemView(View):
+    template_name = 'home.html'
 
-    return ""
+    def get(self, request):
+        mems = Mem.objects.filter(user_id=request.user.id)
+        context = {
+            "mems": mems
+        }
+        return render(request, self.template_name, context)
