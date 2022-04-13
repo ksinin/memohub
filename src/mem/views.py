@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from django.shortcuts import render
 from django.views import View
 
-from mem.forms import UserCreationForm
+from mem.forms import UserCreationForm, MemAddForm
 from .models import Mem
 
 
@@ -40,3 +40,15 @@ class HomeMemView(View):
             "mems": mems
         }
         return render(request, self.template_name, context)
+########################################################
+
+def memadd(request):
+    if request.method == 'POST':
+        form = MemAddForm(request.POST)
+        if form.is_valid():
+            #print(form.cleaned_data)
+            form.save()
+            return redirect('home')
+    else:
+        form = MemAddForm()
+    return render(request, 'mem/addmem.html', {'form': form, 'title': 'Add mem'})
