@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
-from mem import models
 from mem.models import Mem
 
 
@@ -14,7 +13,7 @@ class UserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         fields = ("username", "email")
 
-#######################################
+
 class MemAddForm(forms.ModelForm):
     class Meta:
         model = Mem

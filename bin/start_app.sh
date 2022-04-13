@@ -8,4 +8,4 @@ echo ">>> Apply database migrations"
 python manage.py migrate
 
 echo ">>> Starting server"
-gunicorn -c /src/gunicorn.conf.py memohub.wsgi:application
+gunicorn -c /src/gunicorn.conf.py --reload memohub.wsgi:application

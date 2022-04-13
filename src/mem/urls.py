@@ -1,9 +1,10 @@
 from django.urls import path, include
-from django.contrib.auth import views
-from mem.views import RegisterView, memadd
+
+from mem.views import RegisterView, AddMemView, HomeMemView
 
 urlpatterns = [
     path('', include('django.contrib.auth.urls')),
     path('register/', RegisterView.as_view(), name='register'),
-    path('addmem/', memadd, name='add_page'),
+    path('add/', AddMemView, name='add_mem'),
+    path('', HomeMemView.as_view(template_name='home.html'), name='home'),
 ]

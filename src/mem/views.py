@@ -1,5 +1,4 @@
 from django.contrib.auth import login, authenticate
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.shortcuts import render
 from django.views import View
@@ -36,19 +35,22 @@ class HomeMemView(View):
 
     def get(self, request):
         mems = Mem.objects.filter(user_id=request.user.id)
-        context = {
-            "mems": mems
-        }
+        context = {"mems": mems}
         return render(request, self.template_name, context)
-########################################################
 
-def memadd(request):
-    if request.method == 'POST':
+
+class AddMemView(View):
+    template_name = 'addmem.html'
+
+    def get(self, request):
+        form = MemAddForm()
+        return render(request, self.template_name, {'form': form, 'title': 'Add mem'})
+
+    def post(self, request):
         form = MemAddForm(request.POST)
         if form.is_valid():
-            #print(form.cleaned_data)
-            form.save()
+            mem = form.save(commit=False)
+            mem.user = request.user
+            mem.save()
             return redirect('home')
-    else:
-        form = MemAddForm()
-    return render(request, 'mem/addmem.html', {'form': form, 'title': 'Add mem'})
+        return render(request, self.template_name, {'form': form, 'title': 'Add mem'})
