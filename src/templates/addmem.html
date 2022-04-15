@@ -4,10 +4,10 @@
     <h1>Add</h1>
     <hr>
 
-    <form action="{% url 'addmem' %}" method="post">
-    {{ form }}
-    {% csrf_token %}
-    <button type="submit" class="btn-success">Add</button>
+    <form class="input-group d-flex flex-column" action="{% url 'addmem' %}" method="post">
+        {{ form }}
+        {% csrf_token %}
+        <button type="submit" class="btn-success">Add</button>
     </form>
 
 {% endblock %}

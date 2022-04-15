@@ -5,9 +5,12 @@
         <h3 class="px-2">Register</h3>
     </nav>
 
-    <form action="{% url 'register' %}" method="post">
-            {{ form }}
-            {% csrf_token %}
-        <button type="submit" class="btn btn-success">submit</button>
-    </form>
+    <div class="container my-3">
+        <form action="{% url 'register' %}" method="post">
+                {{ form }}
+                {% csrf_token %}
+            <button type="submit" class="btn btn-success">submit</button>
+        </form>
+    </div>
+
 {% endblock %}

@@ -7,7 +7,7 @@ from mem.models import Mem
 class UserCreationForm(UserCreationForm):
     email = forms.EmailField(
         label="Email",
-        widget=forms.EmailInput(attrs={'autocomplete': 'email'})
+        widget=forms.EmailInput(attrs={'autocomplete': 'email', 'class': 'form-input'})
     )
 
     class Meta(UserCreationForm.Meta):
@@ -19,6 +19,8 @@ class MemAddForm(forms.ModelForm):
         model = Mem
         fields = ["url", "description"]
         widgets = {
-            'url': forms.URLInput(attrs={'class': 'form-input'}),
-            'description': forms.Textarea(attrs={'cols': 30, 'rows': 10}),
+            'url': forms.URLInput(attrs={'class': 'form-input', 'label': 'URL'}),
+            'description': forms.Textarea(
+                attrs={'cols': 30, 'rows': 10, 'class': 'form-input', 'label': 'Description'}
+            ),
         }
