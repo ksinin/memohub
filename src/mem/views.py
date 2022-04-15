@@ -34,7 +34,7 @@ class HomeMemView(View):
     template_name = 'home.html'
 
     def get(self, request):
-        mems = Mem.objects.filter(user_id=request.user.id)
+        mems = Mem.objects.filter()
         context = {"mems": mems}
         return render(request, self.template_name, context)
 
@@ -54,3 +54,12 @@ class AddMemView(View):
             mem.save()
             return redirect('home')
         return render(request, self.template_name, {'form': form, 'title': 'Add mem'})
+
+
+class YourMemView(View):
+    template_name = 'yourmemes.html'
+
+    def get(self, request):
+        mems = Mem.objects.filter(user_id=request.user.id)
+        context = {"mems": mems}
+        return render(request, self.template_name, context)

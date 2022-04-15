@@ -4,7 +4,7 @@
     <h1>Add</h1>
     <hr>
 
-    <form action="{% url 'add_mem' %}" method="post">
+    <form action="{% url 'addmem' %}" method="post">
     {{ form }}
     {% csrf_token %}
     <button type="submit" class="btn-success">Add</button>
