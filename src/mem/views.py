@@ -35,7 +35,7 @@ class HomeMemView(View):
     template_name = 'home.html'
 
     def get(self, request):
-        mems = Mem.objects.filter()
+        mems = Mem.objects.order_by('-datetime_created')
         context = {"mems": mems}
         return render(request, self.template_name, context)
 
@@ -61,7 +61,7 @@ class YourMemView(View):
     template_name = 'yourmemes.html'
 
     def get(self, request):
-        mems = Mem.objects.filter(user_id=request.user.id)
+        mems = Mem.objects.filter(user_id=request.user.id).order_by('-datetime_created')
         context = {"mems": mems}
         return render(request, self.template_name, context)
 
