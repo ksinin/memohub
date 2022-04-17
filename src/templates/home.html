@@ -11,7 +11,9 @@
             {% for mem in mems %}
             <div class="my-1 col-4">
                 <div class="card w-100 h-100">
-                    <img src="{{ mem.url }}" class="card-img-top" alt="...">
+                    <a href="" data-bs-toggle="modal" data-bs-target="#mem-modal" data-mem-url="{{ mem.url }}">
+                        <img src="{{ mem.url }}" class="card-img-top" alt="...">
+                    </a>
                     <div class="card-body">
                         <p class="card-text">{{ mem.description }}</p>
                         <p class="card-text">Added by: <b>{{ mem.user }}</b></p>
@@ -23,4 +25,28 @@
         </div>
     </div>
 
+<div class="modal" id="mem-modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img src="" id="id-mem-url" alt="...">
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+    <script>
+        $('#mem-modal').on('show.bs.modal', function(e) {
+	        var url = $(e.relatedTarget).data('mem-url');
+            var image = document.getElementById("id-mem-url");
+            image.src = url;
+	    });
+    </script>
 {% endblock %}
