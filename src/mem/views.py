@@ -2,9 +2,10 @@ from django.contrib.auth import login, authenticate
 from django.shortcuts import redirect
 from django.shortcuts import render
 from django.views import View
-
+from django.views.generic import DeleteView, UpdateView
 from mem.forms import UserCreationForm, MemAddForm
 from .models import Mem
+from django.urls import reverse_lazy
 
 
 class RegisterView(View):
@@ -63,3 +64,17 @@ class YourMemView(View):
         mems = Mem.objects.filter(user_id=request.user.id)
         context = {"mems": mems}
         return render(request, self.template_name, context)
+
+
+class DeleteMemView(DeleteView):
+    model = Mem
+    pk_url_kwarg = 'mem_id'
+    success_url = reverse_lazy('yourmemes')
+
+
+class EditMemView(UpdateView):
+    model = Mem
+    fields = ['url', 'description']
+    pk_url_kwarg = 'mem_id'
+    template_name = 'editmem.html'
+    success_url = reverse_lazy('yourmemes')
