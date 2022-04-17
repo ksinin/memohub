@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <nav class="navbar navbar-expand-lg" style="border: 2px solid black;">
+        <h3 class="px-2">Your memes</h3>
+    </nav>
+    <style>
+        .button-style{
+          background-color: Transparent;
+          border: none;
+          cursor:pointer;
+        }
+        .btn-warning {
+          background-color: orange !important;
+    }
+    </style>
+
+    {% if user.is_authenticated %}
+    <div class="container my-3">
+        <div class="row">
+
+            {% for mem in mems %}
+            <div class="my-1 col-4">
+                <div class="card w-100 h-100">
+                    <img src="{{ mem.url }}" class="card-img-top" alt="...">
+                    <div class="card-body d-flex">
+                        <p class="card-text" style="width: 80%; margin-right: 1.5em">{{ mem.description }}</p>
+                        <a href="{% url 'editmem' mem_id=mem.id %}" >
+                            <i style="font-size: 22px; color:black" class="fa-solid fa-pencil"></i>
+                        </a>
+                        <form action="{% url 'deletemem' mem_id=mem.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="button-style">
+                                <i style="font-size: 25px; color: orange" class="fa-regular fa-trash-can"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div style="text-align: center">
+                <img src="https://i.pinimg.com/originals/91/a4/81/91a481cab466f2d5493970f4fff266a2.webp" style="width: 60%; margin: 10px">
+                <a href="{% url 'addmem' %}" type="button" class="btn btn-warning btn-lg">
+                    <h2>Hurry up, add a mem!</h2>
+                </a>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+
+    {% else %}
+        Please login to continue
+    {% endif %}
+
+{% endblock %}
