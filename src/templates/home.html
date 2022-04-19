@@ -8,7 +8,7 @@
     <div class="container my-3">
         <div class="row">
 
-            {% for mem in mems %}
+            {% for mem in page_obj %}
             <div class="my-1 col-4">
                 <div class="card w-100 h-100">
                     <a href="" data-bs-toggle="modal" data-bs-target="#mem-modal" data-mem-url="{{ mem.url }}">
@@ -32,10 +32,28 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <img src="" id="id-mem-url" alt="...">
+                <img src="" id="id-mem-url" alt="..." style="width: 700px">
             </div>
         </div>
     </div>
+</div>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
 </div>
 
 {% endblock %}
