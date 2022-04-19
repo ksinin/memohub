@@ -1,4 +1,5 @@
 from django.contrib.auth import login, authenticate
+from django.core.paginator import Paginator
 from django.shortcuts import redirect
 from django.shortcuts import render
 from django.views import View
@@ -27,7 +28,9 @@ class RegisterView(View):
             user = authenticate(username=username, password=password)
             login(request, user)
             return redirect('/')
-        context = {'form': form}
+        context = {
+            'form': form
+        }
         return render(request, self.template_name, context)
 
 
@@ -36,7 +39,12 @@ class HomeMemView(View):
 
     def get(self, request):
         mems = Mem.objects.order_by('-datetime_created')
-        context = {"mems": mems}
+        paginator = Paginator(mems, 9)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        context = {
+            "page_obj": page_obj
+        }
         return render(request, self.template_name, context)
 
 
@@ -62,7 +70,12 @@ class YourMemView(View):
 
     def get(self, request):
         mems = Mem.objects.filter(user_id=request.user.id).order_by('-datetime_created')
-        context = {"mems": mems}
+        paginator = Paginator(mems, 9)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        context = {
+            "page_obj": page_obj
+        }
         return render(request, self.template_name, context)
 
 
