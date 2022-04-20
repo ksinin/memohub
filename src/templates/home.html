@@ -16,7 +16,9 @@
                     </a>
                     <div class="card-body">
                         <p class="card-text">{{ mem.description }}</p>
-                        <p class="card-text">Added by: <b>{{ mem.user }}</b></p>
+                        <p class="card-text">Added by: <b>
+                            <a href="{% url 'yourmemes' author=mem.user %}">{{ mem.user }}</a>
+                        </b></p>
                     </div>
                 </div>
             </div>

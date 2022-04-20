@@ -43,7 +43,7 @@
         <div class="d-flex">
             <i style="font-size: 30px; color: orange" class="fa-solid fa-user-astronaut"></i>
             {% if user.is_authenticated %}
-                <a class="px-3 memohub-header-link" href="{% url 'yourmemes' %}">{{user}}</a>
+                <a class="px-3 memohub-header-link" href="{% url 'yourmemes' author=user %}">{{user}}</a>
                 <a class="px-3 memohub-header-link" href="{% url 'logout' %}">Logout</a>
             {% else %}
                 <a class="px-3 memohub-header-link" href="{% url 'login' %}">Login</a>

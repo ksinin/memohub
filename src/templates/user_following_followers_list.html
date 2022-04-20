@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <nav class="navbar navbar-expand-lg" style="border: 2px solid black;">
+        {% if 'following' in request.path %}
+            <h3 class="px-2">Following</h3>
+        {% elif 'followers' in request.path %}
+            <h3 class="px-2">Followers</h3>
+        {% endif %}
+    </nav>
+
+    <div class="container my-3">
+        <div class="row">
+
+            {% for item in page_obj %}
+            <div class="my-1 col-4">
+                <a href="{% url 'yourmemes' author=item %}">{{ item }}</a>
+            </div>
+            {% empty %}
+                <p>No users to show :(</p>
+            {% endfor %}
+
+        </div>
+    </div>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+{% endblock %}
