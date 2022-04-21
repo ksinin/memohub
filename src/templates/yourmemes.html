@@ -2,7 +2,34 @@
 
 {% block content %}
     <nav class="navbar navbar-expand-lg" style="border: 2px solid black;">
-        <h3 class="px-2">Your memes</h3>
+        <div class="container">
+                <div class="col-8">
+                    <h3 class="px-2">{% if request.user == author %}Your memes {% else %}
+                        <b>{{ author.username }}</b> memes{% endif %}</h3>
+                </div>
+                <div class="col-4" style="display: contents">
+                    <a class="px-3" href="{% url 'user_followers_list' author=author %}">
+                        {{ author_followers_count }} followers
+                    </a>
+                    <a class="px-3" href="{% url 'user_following_list' author=author %}">
+                        {{ author_following_count }} following
+                    </a>
+                    {% if request.user != author %}
+                        <form action="{% url 'user_follow_unfollow' author=author %}" method="post" class="px-3">
+                            {% csrf_token %}
+                                {% if user in author_followers %}
+                                <button type="submit" class="btn btn-dark">
+                                    Unfollow
+                                </button>
+                                {% else %}
+                                <button type="submit" class="btn btn-warning">
+                                    Follow
+                                </button>
+                                {% endif %}
+                        </form>
+                    {% endif %}
+                </div>
+        </div>
     </nav>
     <style>
         .button-style{
@@ -25,6 +52,7 @@
                     <img src="{{ mem.url }}" class="card-img-top" alt="...">
                     <div class="card-body d-flex">
                         <p class="card-text" style="width: 80%; margin-right: 1.5em">{{ mem.description }}</p>
+                        {% if request.user == author %}
                         <a href="{% url 'editmem' mem_id=mem.id %}" >
                             <i style="font-size: 22px; color:black" class="fa-solid fa-pencil"></i>
                         </a>
@@ -34,16 +62,21 @@
                                 <i style="font-size: 25px; color: orange" class="fa-regular fa-trash-can"></i>
                             </button>
                         </form>
+                        {% endif %}
                     </div>
                 </div>
             </div>
             {% empty %}
-            <div style="text-align: center">
-                <img src="https://i.pinimg.com/originals/91/a4/81/91a481cab466f2d5493970f4fff266a2.webp" style="width: 60%; margin: 10px">
-                <a href="{% url 'addmem' %}" type="button" class="btn btn-warning btn-lg">
-                    <h2>Hurry up, add a mem!</h2>
-                </a>
-            </div>
+                <div style="text-align: center">
+                    {% if request.user == author %}
+                        <img src="https://i.pinimg.com/originals/91/a4/81/91a481cab466f2d5493970f4fff266a2.webp" style="width: 60%; margin: 10px">
+                        <a href="{% url 'addmem' %}" type="button" class="btn btn-warning btn-lg">
+                            <h2>Hurry up, add a mem!</h2>
+                        </a>
+                    {% else %}
+                        <p>So sad, user has no memes :(</p>
+                    {% endif %}
+                </div>
             {% endfor %}
 
         </div>

@@ -3,10 +3,11 @@ from django.core.paginator import Paginator
 from django.shortcuts import redirect
 from django.shortcuts import render
 from django.views import View
-from django.views.generic import DeleteView, UpdateView
+from django.views.generic import DeleteView, UpdateView, CreateView
 from mem.forms import UserCreationForm, MemAddForm
-from .models import Mem
+from .models import Mem, UserFollowing
 from django.urls import reverse_lazy
+from django.contrib.auth.models import User
 
 
 class RegisterView(View):
@@ -68,13 +69,20 @@ class AddMemView(View):
 class YourMemView(View):
     template_name = 'yourmemes.html'
 
-    def get(self, request):
-        mems = Mem.objects.filter(user_id=request.user.id).order_by('-datetime_created')
+    def get(self, request, author):
+        author = User.objects.get(username=author)
+        author_followers = User.objects.filter(following__in=author.followers.all()).order_by(
+            '-following__created_at') if author.followers.all() else []
+        mems = Mem.objects.filter(user=author).order_by('-datetime_created')
         paginator = Paginator(mems, 9)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         context = {
-            "page_obj": page_obj
+            "page_obj": page_obj,
+            "author": author,
+            "author_followers": author_followers,
+            "author_followers_count": author.followers.count(),
+            "author_following_count": author.following.count()
         }
         return render(request, self.template_name, context)
 
@@ -82,7 +90,9 @@ class YourMemView(View):
 class DeleteMemView(DeleteView):
     model = Mem
     pk_url_kwarg = 'mem_id'
-    success_url = reverse_lazy('yourmemes')
+
+    def get_success_url(self):
+        return reverse_lazy('yourmemes', kwargs={'author': self.request.user})
 
 
 class EditMemView(UpdateView):
@@ -90,4 +100,62 @@ class EditMemView(UpdateView):
     fields = ['url', 'description']
     pk_url_kwarg = 'mem_id'
     template_name = 'editmem.html'
-    success_url = reverse_lazy('yourmemes')
+
+    def get_success_url(self):
+        return reverse_lazy('yourmemes', kwargs={'author': self.request.user})
+
+
+class UserFollowingView(View):
+    template_name = 'user_following_followers_list.html'
+
+    def get(self, request, author):
+        author = User.objects.get(username=author)
+        author_followers = author.following.all()
+        following = User.objects.filter(followers__in=author_followers).order_by('-followers__created_at') if author_followers else []
+        paginator = Paginator(following, 10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
+        context = {
+            "page_obj": page_obj,
+            "author": author
+        }
+        return render(request, self.template_name, context)
+
+
+class UserFollowersView(View):
+    template_name = 'user_following_followers_list.html'
+
+    def get(self, request, author):
+        author = User.objects.get(username=author)
+        author_following = author.followers.all()
+        followers = User.objects.filter(following__in=author_following).order_by('-following__created_at') if author_following else []
+        paginator = Paginator(followers, 10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
+        context = {
+            "page_obj": page_obj,
+            "author": author
+        }
+        return render(request, self.template_name, context)
+
+
+class FollowToggleUserView(View):
+
+    def get(self, request):
+        pass
+
+    def post(self, request, author):
+        author = User.objects.get(username=author)
+        current_user = request.user
+        author_following = author.followers.all()
+        followers = User.objects.filter(following__in=author_following) if author_following else []
+
+        if author != current_user:
+            if current_user in followers:
+                UserFollowing.objects.filter(user=current_user, following_user=author).delete()
+            else:
+                UserFollowing.objects.create(user=current_user, following_user=author)
+
+        return redirect(reverse_lazy('yourmemes', kwargs={'author': author}))
