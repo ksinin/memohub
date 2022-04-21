@@ -6,66 +6,75 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <title>Memohub</title>
 </head>
-<body class="container">
+    <body class="container">
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-<style>
-    .memohub-header-link,
-    .nav-link {
-        font-size: 20px;
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <style>
+            .memohub-header-link,
+            .nav-link {
+                font-size: 20px;
+                color: white;
+            }
+            .memohub-header-link:hover,
+            .nav-link:hover {
+                color: orange;
+            }
+            .modal-dialog{
+                position: relative;
+                display: table;
+                overflow-y: auto;
+                overflow-x: auto;
+                width: auto;
+                min-width: 700px;
+            }
+            footer {
+                bottom: 0 !important;
+                position: fixed !important;
+                width: 100% !important;
+                max-width: 1320px;
+            }
+
+        .memohub-text {
         color: white;
-    }
-    .memohub-header-link:hover,
-    .nav-link:hover {
-        color: orange;
-    }
-    .modal-dialog{
-        position: relative;
-        display: table;
-        overflow-y: auto;
-        overflow-x: auto;
-        width: auto;
-        min-width: 700px;
-    }
-
-</style>
-    <div class="container-fluid">
-        <h1 class="navbar-brand pt-4 pb-4 my-0">
-            <a href="{% url 'home' %}" style="font-size: 40px; text-decoration: none; color: white;">
-                Memo<span style="color: orange">hub</span>
-            </a>
-        </h1>
-        <ul class="nav justify-content-center">
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'addmem' %}">Add new mem</a>
-          </li>
-        </ul>
-        <div class="d-flex">
-            <i style="font-size: 30px; color: orange" class="fa-solid fa-user-astronaut"></i>
-            {% if user.is_authenticated %}
-                <a class="px-3 memohub-header-link" href="{% url 'yourmemes' author=user %}">{{user}}</a>
-                <a class="px-3 memohub-header-link" href="{% url 'logout' %}">Logout</a>
-            {% else %}
-                <a class="px-3 memohub-header-link" href="{% url 'login' %}">Login</a>
-                <a class="px-3 memohub-header-link" href="{% url 'register' %}">Register</a>
-            {% endif %}
+        }
+        </style>
+        <div class="container-fluid">
+            <h1 class="navbar-brand pt-4 pb-4 my-0">
+                <a href="{% url 'home' %}" style="font-size: 40px; text-decoration: none; color: white;">
+                    Memo<span style="color: orange">hub</span>
+                </a>
+            </h1>
+            <ul class="nav justify-content-center">
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'addmem' %}">Add new mem</a>
+              </li>
+            </ul>
+            <div class="d-flex">
+                <i style="font-size: 30px; color: orange" class="fa-solid fa-user-astronaut"></i>
+                {% if user.is_authenticated %}
+                    <a class="px-3 memohub-header-link" href="{% url 'yourmemes' author=user %}">{{user}}</a>
+                    <a class="px-3 memohub-header-link" href="{% url 'logout' %}">Logout</a>
+                {% else %}
+                    <a class="px-3 memohub-header-link" href="{% url 'login' %}">Login</a>
+                    <a class="px-3 memohub-header-link" href="{% url 'register' %}">Register</a>
+                {% endif %}
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
 
 
-{% block content %}
-{% endblock %}
+    {% block content %}
+    {% endblock %}
 
-{% block scripts %}
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js" integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc" crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-{% endblock %}
+    {% block scripts %}
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js" integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    {% endblock %}
 
-<footer>
-    <p><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>~ (c) Memohub Application 2022 </p>
-    <p><a href="mailto:maksim.pronin1996@gmail.com">E-mail for feedbacks</a></p>
-</footer>
+        <footer class="navbar navbar-expand-lg navbar-dark bg-dark d-flex justify-content-between px-3 align-items-center">
+            <p class="m-0"><a class="px-3 memohub-header-link" href="mailto:maksim.pronin1996@gmail.com">E-mail for feedbacks</a></p>
+            <p class="m-0 memohub-text">~ (c) Memohub Application 2022 </p>
+        </footer>
 
-</body>
+    </body>
 </html>

@@ -1,6 +1,48 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <style>
+        .memohub-form {
+            margin: 50px auto;
+            width: 50%;
+        }
+        .memohub-form input {
+            display: block !important;
+            width: 100% !important;
+            padding: 0.375rem 0.75rem !important;
+            font-size: 1rem !important;
+            line-height: 1.5 !important;
+            color: #495057 !important;
+            background-color: #fff !important;
+            background-clip: padding-box !important;
+            border: 1px solid #ced4da !important;
+            border-radius: 0.25rem !important;
+            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out !important;
+        }
+        .memohub-form input:focus {
+            color: #495057 !important;
+            border-color: #80bdff !important;
+            outline: 0 !important;
+            box-shadow: 0 0 0 0.2rem rgb(0 123 255 / 25%) !important;
+        }
+        .memohub-form label {
+            display: inline-block !important;
+            margin-bottom: 0.5rem !important;
+            margin-top: 2rem !important;
+            font-size: 20px;
+        }
+        .memohub-form button {
+            font-size: 30px;
+        }
+        .memohub-form a,
+        .memohub-form a:focus,
+        .memohub-form a:hover {
+            color: orange;
+        }
+        .memohub-form a:visited {
+            color: #cf8909;
+        }
+    </style>
     <nav class="navbar navbar-expand-lg" style="border: 2px solid black;">
         <h3 class="px-2">Login</h3>
     </nav>
@@ -9,11 +51,29 @@
         <p>{{ form.errors.error }}</p>
     {% endif %}
 
-    <form action="{% url 'login' %}" method="post">
-    {{ form }}
-    {% csrf_token %}
-    <button type="submit" class="btn-success">Login</button>
-    </form>
+    <div class="container memohub-form-wrapper">
+        <form class="memohub-form d-flex flex-column justify-center" action="{% url 'login' %}" method="post">
+            <div class="form-group">
 
-<a href="{% url 'password_reset' %}">Forgot password?</a>
+                <label for="{{ form.username.id_for_label }}">Username:</label>
+                {{ form.username }}
+                {{ form.username.errors }}
+
+            </div>
+            <div class="form-group">
+
+                <label for="{{ form.password.id_for_label }}">Password:</label>
+                {{ form.password }}
+                {{ form.password.errors }}
+            </div>
+            <div>
+                <a class="memohub-forgot-password" href="{% url 'password_reset' %}">Forgot password?</a>
+            </div>
+            {% csrf_token %}
+            <div class="m-auto">
+                <button type="submit" class="btn btn-warning">Sign in</button>
+            </div>
+        </form>
+    </div>
+
 {% endblock %}
