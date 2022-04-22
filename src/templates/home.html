@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
     <nav class="navbar navbar-expand-lg" style="border: 2px solid black;">
         <h3 class="px-2">Feeds</h3>
     </nav>
@@ -21,16 +22,18 @@
                             </b></p>
                         </div>
                         {% if user.is_authenticated %}
-                            <form action="{% url 'mem_like' mem.id %}" method="POST">
+                            <form action="{% url 'mem_like' mem.id %}" method="POST" >
                                 {% csrf_token %}
 
                                 {% if mem.post_is_liked %}
-                                    <button type="submit" name="mem_id" value="{{ mem.id }}"
-                                            class="btn btn-info">Unlike
+                                    <button style="float: right; background: white; border: none" type="submit" name="mem_id" value="{{ mem.id }}">
+                                       <h4>{{ mem.number_of_likes}}</h4>
+                                           <i style="font-size: 30px; color: black" class="fa-solid fa-heart-circle-minus " ></i>
                                     </button>
                                 {% else %}
-                                    <button type="submit" name="mem_id" value="{{ mem.id }}"
-                                            class="btn btn-info">Like
+                                    <button style="float: right; background: white; border: none" type="submit" name="mem_id" value="{{ mem.id }}">
+                                        <h4>{{ mem.number_of_likes}}</h4>
+                                            <i style="font-size: 30px; color: orange" class="fa-solid fa-heart"></i>
                                     </button>
                                 {% endif %}
                             </form>
@@ -38,8 +41,6 @@
                             <a class="btn btn-outline-info" href="{% url 'login' %}?next={{ request.path }}">Log in to
                                 like this mem!</a><br>
                         {% endif %}
-                        <strong class="text-secondary">{{ mem.number_of_likes }}
-                            Like{{ mem.number_of_likes|pluralize }}</strong>
 
                     </div>
                 </div>
