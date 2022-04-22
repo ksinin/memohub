@@ -1,15 +1,16 @@
 from django.contrib.auth import login, authenticate
+from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, get_object_or_404
 from django.shortcuts import render
-from django.views import View
-from django.views.generic import DeleteView, UpdateView, CreateView, DetailView
-from mem.forms import UserCreationForm, MemAddForm
-from .models import Mem, UserFollowing, BlogPost
-from django.urls import reverse_lazy
-from django.contrib.auth.models import User
 from django.urls import reverse
+from django.urls import reverse_lazy
+from django.views import View
+from django.views.generic import DeleteView, UpdateView
+
+from mem.forms import UserCreationForm, MemAddForm
+from .models import Mem, UserFollowing
 
 
 class RegisterView(View):
@@ -42,12 +43,19 @@ class HomeMemView(View):
 
     def get(self, request):
         mems = Mem.objects.order_by('-datetime_created')
+        for mem in mems:
+            liked = False
+            if mem.likes.filter(id=self.request.user.id).exists():
+                liked = True
+            mem.number_of_likes = mem.likes.count()
+            mem.post_is_liked = liked
         paginator = Paginator(mems, 9)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         context = {
             "page_obj": page_obj
         }
+
         return render(request, self.template_name, context)
 
 
@@ -143,10 +151,7 @@ class UserFollowersView(View):
         return render(request, self.template_name, context)
 
 
-class FollowToggleUserView(View):
-
-    def get(self, request):
-        pass
+class FollowToggleUserView(UpdateView):
 
     def post(self, request, author):
         author = User.objects.get(username=author)
@@ -163,28 +168,12 @@ class FollowToggleUserView(View):
         return redirect(reverse_lazy('yourmemes', kwargs={'author': author}))
 
 
-def BlogPostLike(request, pk):
-    post = get_object_or_404(BlogPost, id=request.POST.get('blogpost_id'))
-    if post.likes.filter(id=request.user.id).exists():
-        post.likes.remove(request.user)
-    else:
-        post.likes.add(request.user)
+class MemLikeView(UpdateView):
 
-    return HttpResponseRedirect(reverse('BlogPost_detail', args=[str(pk)]))
-
-
-class BlogPostDetailView(DetailView):
-    model = BlogPost
-    template_name = 'BlogPost_detail.html'
-    context_object_name = 'object'
-
-    def get_context_data(self, **kwargs):
-        data = super().get_context_data(**kwargs)
-
-        likes_connected = get_object_or_404(BlogPost, id=self.kwargs['pk'])
-        liked = False
-        if likes_connected.likes.filter(id=self.request.user.id).exists():
-            liked = True
-        data['number_of_likes'] = likes_connected.number_of_likes()
-        data['post_is_liked'] = liked
-        return data
+    def post(self, request, mem_id):
+        mem = get_object_or_404(Mem, id=mem_id)
+        if mem.likes.filter(id=request.user.id).exists():
+            mem.likes.remove(request.user)
+        else:
+            mem.likes.add(request.user)
+        return HttpResponseRedirect(reverse('home'))

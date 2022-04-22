@@ -6,16 +6,10 @@ class Mem(models.Model):
     url = models.CharField(max_length=256, null=False, blank=False)
     description = models.TextField(null=True, blank=True)
     datetime_created = models.DateTimeField(auto_now_add=True)
+    likes = models.ManyToManyField("auth.User", related_name='mem_like')
 
 
 class UserFollowing(models.Model):
     user = models.ForeignKey("auth.User", related_name="following", on_delete=models.CASCADE)
     following_user = models.ForeignKey("auth.User", related_name="followers", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
-
-
-class BlogPost(models.Model):
-    likes = models.ManyToManyField("auth.User", related_name='blogpost_like')
-
-    def number_of_likes(self):
-        return self.likes.count()
