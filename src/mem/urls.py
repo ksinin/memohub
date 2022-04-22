@@ -1,7 +1,7 @@
 from django.urls import path, include
 
 from mem.views import RegisterView, AddMemView, YourMemView, DeleteMemView, EditMemView, UserFollowingView, \
-    UserFollowersView, FollowToggleUserView
+    UserFollowersView, FollowToggleUserView, BlogPostLike
 
 urlpatterns = [
     path('', include('django.contrib.auth.urls')),
@@ -13,4 +13,5 @@ urlpatterns = [
     path('<str:author>/following/', UserFollowingView.as_view(), name='user_following_list'),
     path('<str:author>/followers/', UserFollowersView.as_view(), name='user_followers_list'),
     path('<str:author>/follow_unfollow/', FollowToggleUserView.as_view(), name='user_follow_unfollow'),
+    path('blogpost-like/<int:pk>', BlogPostLike, name="blogpost_like"),
 ]
