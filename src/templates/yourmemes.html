@@ -65,6 +65,26 @@
                         </form>
                         {% endif %}
                     </div>
+                    {% if user.is_authenticated %}
+                            <form action="{% url 'mem_like' mem.id %}" method="POST" >
+                                {% csrf_token %}
+
+                                {% if mem.post_is_liked %}
+                                    <button style="float: right; background: white; border: none" type="submit" name="mem_id" value="{{ mem.id }}">
+                                       <h4>{{ mem.number_of_likes}}</h4>
+                                           <i style="font-size: 30px; color: black" class="fa-solid fa-heart-circle-minus " ></i>
+                                    </button>
+                                {% else %}
+                                    <button style="float: right; background: white; border: none" type="submit" name="mem_id" value="{{ mem.id }}">
+                                        <h4>{{ mem.number_of_likes}}</h4>
+                                            <i style="font-size: 30px; color: orange" class="fa-solid fa-heart"></i>
+                                    </button>
+                                {% endif %}
+                            </form>
+                        {% else %}
+                            <a class="btn btn-outline-info" href="{% url 'login' %}?next={{ request.path }}">Log in to
+                                like this mem!</a><br>
+                        {% endif %}
                 </div>
             </div>
             {% empty %}

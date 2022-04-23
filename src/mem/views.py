@@ -59,6 +59,33 @@ class HomeMemView(View):
         return render(request, self.template_name, context)
 
 
+class YourMemView(View):
+    template_name = 'yourmemes.html'
+
+    def get(self, request, author):
+        author = User.objects.get(username=author)
+        author_followers = User.objects.filter(following__in=author.followers.all()).order_by(
+            '-following__created_at') if author.followers.all() else []
+        mems = Mem.objects.filter(user=author).order_by('-datetime_created')
+        for mem in mems:
+            liked = False
+            if mem.likes.filter(id=self.request.user.id).exists():
+                liked = True
+            mem.number_of_likes = mem.likes.count()
+            mem.post_is_liked = liked
+        paginator = Paginator(mems, 9)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        context = {
+            "page_obj": page_obj,
+            "author": author,
+            "author_followers": author_followers,
+            "author_followers_count": author.followers.count(),
+            "author_following_count": author.following.count()
+        }
+        return render(request, self.template_name, context)
+
+
 class AddMemView(View):
     template_name = 'addmem.html'
 
@@ -74,27 +101,6 @@ class AddMemView(View):
             mem.save()
             return redirect('home')
         return render(request, self.template_name, {'form': form, 'title': 'Add mem'})
-
-
-class YourMemView(View):
-    template_name = 'yourmemes.html'
-
-    def get(self, request, author):
-        author = User.objects.get(username=author)
-        author_followers = User.objects.filter(following__in=author.followers.all()).order_by(
-            '-following__created_at') if author.followers.all() else []
-        mems = Mem.objects.filter(user=author).order_by('-datetime_created')
-        paginator = Paginator(mems, 9)
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        context = {
-            "page_obj": page_obj,
-            "author": author,
-            "author_followers": author_followers,
-            "author_followers_count": author.followers.count(),
-            "author_following_count": author.following.count()
-        }
-        return render(request, self.template_name, context)
 
 
 class DeleteMemView(DeleteView):
