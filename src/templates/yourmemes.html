@@ -51,7 +51,7 @@
                         </a>
                         <form action="{% url 'deletemem' mem_id=mem.id %}" method="post">
                             {% csrf_token %}
-                            <button type="submit" class="button-style">
+                            <button style="background: white; border: none" type="submit" class="button-style">
                                 <i style="font-size: 25px; color: orange" class="fa-regular fa-trash-can"></i>
                             </button>
                         </form>
