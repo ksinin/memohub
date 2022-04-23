@@ -49,7 +49,7 @@ class HomeMemView(View):
                 liked = True
             mem.number_of_likes = mem.likes.count()
             mem.post_is_liked = liked
-        paginator = Paginator(mems, 9)
+        paginator = Paginator(mems, 6)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         context = {
@@ -73,7 +73,7 @@ class YourMemView(View):
                 liked = True
             mem.number_of_likes = mem.likes.count()
             mem.post_is_liked = liked
-        paginator = Paginator(mems, 9)
+        paginator = Paginator(mems, 6)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         context = {

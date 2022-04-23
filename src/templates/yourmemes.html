@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% load static %}
 
     <nav class="navbar navbar-expand-lg" style="border: 2px solid black;">
+        <link href="{% static 'static_files/css/styles.css' %}" rel="stylesheet">
         <div class="container">
                 <div class="col-8">
                     <h3 class="px-2">{% if request.user == author %}Your memes {% else %}
@@ -32,16 +34,6 @@
                 </div>
         </div>
     </nav>
-    <style>
-        .button-style{
-          background-color: Transparent;
-          border: none;
-          cursor:pointer;
-        }
-        .btn-warning {
-          background-color: orange !important;
-    }
-    </style>
 
     {% if user.is_authenticated %}
     <div class="container my-3">
