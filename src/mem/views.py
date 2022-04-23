@@ -59,6 +59,32 @@ class HomeMemView(View):
         return render(request, self.template_name, context)
 
 
+class FollowingMemView(View):
+    template_name = 'home.html'
+
+    def get(self, request):
+
+        current_user = User.objects.get(username=request.user)
+        current_users_following = User.objects.filter(followers__in=current_user.following.all()) if current_user.following.all() else []
+        mems = Mem.objects.filter(user__in=current_users_following).order_by('-datetime_created')
+
+        for mem in mems:
+            liked = False
+            if mem.likes.filter(id=self.request.user.id).exists():
+                liked = True
+            mem.number_of_likes = mem.likes.count()
+            mem.post_is_liked = liked
+
+        paginator = Paginator(mems, 6)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        context = {
+            "page_obj": page_obj
+        }
+
+        return render(request, self.template_name, context)
+
+
 class YourMemView(View):
     template_name = 'yourmemes.html'
 

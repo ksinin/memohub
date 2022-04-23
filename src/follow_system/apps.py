@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class MemConfig(AppConfig):
+class FollowSystemConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'mem'
+    name = 'follow_system'
