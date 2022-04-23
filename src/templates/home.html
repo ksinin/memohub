@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% load static %}
+
     <nav class="navbar navbar-expand-lg" style="border: 2px solid black;">
         <h3 class="px-2">Feeds</h3>
     </nav>
@@ -9,38 +11,59 @@
         <div class="row">
 
             {% for mem in page_obj %}
-            <div class="my-1 col-4">
-                <div class="card w-100 h-100">
-                    <a href="" data-bs-toggle="modal" data-bs-target="#mem-modal" data-mem-url="{{ mem.url }}">
-                        <img src="{{ mem.url }}" class="card-img-top" alt="...">
-                    </a>
-                    <div class="card-body">
-                        <p class="card-text">{{ mem.description }}</p>
-                        <p class="card-text">Added by: <b>
-                            <a href="{% url 'yourmemes' author=mem.user %}">{{ mem.user }}</a>
-                        </b></p>
+                <div class="my-1 col-4">
+                    <div class="card w-100 h-100">
+                        <a href="" data-bs-toggle="modal" data-bs-target="#mem-modal" data-mem-url="{{ mem.url }}">
+                            <img src="{{ mem.url }}" class="card-img-top" alt="...">
+                        </a>
+                        <div class="card-body">
+                            <p class="card-text">{{ mem.description }}</p>
+                            <p class="card-text">Added by: <b>
+                                <a style="color: black" href="{% url 'yourmemes' author=mem.user %}">{{ mem.user }}</a>
+                            </b></p>
+                        </div>
+                        {% if user.is_authenticated %}
+                            <form action="{% url 'mem_like' mem.id %}" method="POST" >
+                                {% csrf_token %}
+
+                                {% if mem.post_is_liked %}
+                                    <button style="float: right; background: white; border: none" type="submit" name="mem_id" value="{{ mem.id }}">
+                                       <h4>{{ mem.number_of_likes}}</h4>
+                                           <i style="font-size: 30px; color: black" class="fa-solid fa-heart-circle-minus " ></i>
+                                    </button>
+                                {% else %}
+                                    <button style="float: right; background: white; border: none" type="submit" name="mem_id" value="{{ mem.id }}">
+                                        <h4>{{ mem.number_of_likes}}</h4>
+                                            <i style="font-size: 30px; color: orange" class="fa-solid fa-heart"></i>
+                                    </button>
+                                {% endif %}
+                            </form>
+                        {% else %}
+                            <a style="color: black; text-decoration: none" class="btn btn-warning" href="{% url 'login' %}?next={{ request.path }}">Log in to
+                                like this mem!</a><br>
+                        {% endif %}
+
                     </div>
                 </div>
-            </div>
             {% endfor %}
 
         </div>
     </div>
 
-<div class="modal" id="mem-modal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <img src="" id="id-mem-url" alt="..." style="width: 700px">
+    <div class="modal" id="mem-modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <img src="" id="id-mem-url" alt="..." style="width: 700px">
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="pagination">
+    <div class="pagination">
     <span class="step-links">
         {% if page_obj.has_previous %}
             <a href="?page=1">&laquo; first</a>
@@ -56,17 +79,17 @@
             <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
         {% endif %}
     </span>
-</div>
+    </div>
 
 {% endblock %}
 
 {% block scripts %}
     {{ block.super }}
     <script>
-        $('#mem-modal').on('show.bs.modal', function(e) {
-	        var url = $(e.relatedTarget).data('mem-url');
+        $('#mem-modal').on('show.bs.modal', function (e) {
+            var url = $(e.relatedTarget).data('mem-url');
             var image = document.getElementById("id-mem-url");
             image.src = url;
-	    });
+        });
     </script>
 {% endblock %}

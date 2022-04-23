@@ -1,13 +1,16 @@
 from django.contrib.auth import login, authenticate
+from django.contrib.auth.models import User
 from django.core.paginator import Paginator
-from django.shortcuts import redirect
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect, get_object_or_404
 from django.shortcuts import render
+from django.urls import reverse
+from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import DeleteView, UpdateView, CreateView
+from django.views.generic import DeleteView, UpdateView
+
 from mem.forms import UserCreationForm, MemAddForm
 from .models import Mem, UserFollowing
-from django.urls import reverse_lazy
-from django.contrib.auth.models import User
 
 
 class RegisterView(View):
@@ -40,11 +43,45 @@ class HomeMemView(View):
 
     def get(self, request):
         mems = Mem.objects.order_by('-datetime_created')
-        paginator = Paginator(mems, 9)
+        for mem in mems:
+            liked = False
+            if mem.likes.filter(id=self.request.user.id).exists():
+                liked = True
+            mem.number_of_likes = mem.likes.count()
+            mem.post_is_liked = liked
+        paginator = Paginator(mems, 6)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         context = {
             "page_obj": page_obj
+        }
+
+        return render(request, self.template_name, context)
+
+
+class YourMemView(View):
+    template_name = 'yourmemes.html'
+
+    def get(self, request, author):
+        author = User.objects.get(username=author)
+        author_followers = User.objects.filter(following__in=author.followers.all()).order_by(
+            '-following__created_at') if author.followers.all() else []
+        mems = Mem.objects.filter(user=author).order_by('-datetime_created')
+        for mem in mems:
+            liked = False
+            if mem.likes.filter(id=self.request.user.id).exists():
+                liked = True
+            mem.number_of_likes = mem.likes.count()
+            mem.post_is_liked = liked
+        paginator = Paginator(mems, 6)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        context = {
+            "page_obj": page_obj,
+            "author": author,
+            "author_followers": author_followers,
+            "author_followers_count": author.followers.count(),
+            "author_following_count": author.following.count()
         }
         return render(request, self.template_name, context)
 
@@ -64,27 +101,6 @@ class AddMemView(View):
             mem.save()
             return redirect('home')
         return render(request, self.template_name, {'form': form, 'title': 'Add mem'})
-
-
-class YourMemView(View):
-    template_name = 'yourmemes.html'
-
-    def get(self, request, author):
-        author = User.objects.get(username=author)
-        author_followers = User.objects.filter(following__in=author.followers.all()).order_by(
-            '-following__created_at') if author.followers.all() else []
-        mems = Mem.objects.filter(user=author).order_by('-datetime_created')
-        paginator = Paginator(mems, 9)
-        page_number = request.GET.get('page')
-        page_obj = paginator.get_page(page_number)
-        context = {
-            "page_obj": page_obj,
-            "author": author,
-            "author_followers": author_followers,
-            "author_followers_count": author.followers.count(),
-            "author_following_count": author.following.count()
-        }
-        return render(request, self.template_name, context)
 
 
 class DeleteMemView(DeleteView):
@@ -141,10 +157,7 @@ class UserFollowersView(View):
         return render(request, self.template_name, context)
 
 
-class FollowToggleUserView(View):
-
-    def get(self, request):
-        pass
+class FollowToggleUserView(UpdateView):
 
     def post(self, request, author):
         author = User.objects.get(username=author)
@@ -159,3 +172,14 @@ class FollowToggleUserView(View):
                 UserFollowing.objects.create(user=current_user, following_user=author)
 
         return redirect(reverse_lazy('yourmemes', kwargs={'author': author}))
+
+
+class MemLikeView(UpdateView):
+
+    def post(self, request, mem_id):
+        mem = get_object_or_404(Mem, id=mem_id)
+        if mem.likes.filter(id=request.user.id).exists():
+            mem.likes.remove(request.user)
+        else:
+            mem.likes.add(request.user)
+        return HttpResponseRedirect(reverse('home'))

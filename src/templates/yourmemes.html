@@ -1,17 +1,20 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% load static %}
+
     <nav class="navbar navbar-expand-lg" style="border: 2px solid black;">
+        <link href="{% static 'static_files/css/styles.css' %}" rel="stylesheet">
         <div class="container">
                 <div class="col-8">
                     <h3 class="px-2">{% if request.user == author %}Your memes {% else %}
                         <b>{{ author.username }}</b> memes{% endif %}</h3>
                 </div>
                 <div class="col-4" style="display: contents">
-                    <a class="px-3" href="{% url 'user_followers_list' author=author %}">
+                    <a style="color: black" class="px-3" href="{% url 'user_followers_list' author=author %}">
                         {{ author_followers_count }} followers
                     </a>
-                    <a class="px-3" href="{% url 'user_following_list' author=author %}">
+                    <a style="color: black" class="px-3" href="{% url 'user_following_list' author=author %}">
                         {{ author_following_count }} following
                     </a>
                     {% if request.user != author %}
@@ -31,16 +34,6 @@
                 </div>
         </div>
     </nav>
-    <style>
-        .button-style{
-          background-color: Transparent;
-          border: none;
-          cursor:pointer;
-        }
-        .btn-warning {
-          background-color: orange !important;
-    }
-    </style>
 
     {% if user.is_authenticated %}
     <div class="container my-3">
@@ -64,6 +57,26 @@
                         </form>
                         {% endif %}
                     </div>
+                    {% if user.is_authenticated %}
+                            <form action="{% url 'mem_like' mem.id %}" method="POST" >
+                                {% csrf_token %}
+
+                                {% if mem.post_is_liked %}
+                                    <button style="float: right; background: white; border: none" type="submit" name="mem_id" value="{{ mem.id }}">
+                                       <h4>{{ mem.number_of_likes}}</h4>
+                                           <i style="font-size: 30px; color: black" class="fa-solid fa-heart-circle-minus " ></i>
+                                    </button>
+                                {% else %}
+                                    <button style="float: right; background: white; border: none" type="submit" name="mem_id" value="{{ mem.id }}">
+                                        <h4>{{ mem.number_of_likes}}</h4>
+                                            <i style="font-size: 30px; color: orange" class="fa-solid fa-heart"></i>
+                                    </button>
+                                {% endif %}
+                            </form>
+                        {% else %}
+                            <a class="btn btn-outline-info" href="{% url 'login' %}?next={{ request.path }}">Log in to
+                                like this mem!</a><br>
+                        {% endif %}
                 </div>
             </div>
             {% empty %}
