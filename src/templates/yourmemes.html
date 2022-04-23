@@ -9,10 +9,10 @@
                         <b>{{ author.username }}</b> memes{% endif %}</h3>
                 </div>
                 <div class="col-4" style="display: contents">
-                    <a style="color: black; text-decoration: none" class="px-3" href="{% url 'user_followers_list' author=author %}">
+                    <a style="color: black" class="px-3" href="{% url 'user_followers_list' author=author %}">
                         {{ author_followers_count }} followers
                     </a>
-                    <a style="color: black; text-decoration: none" class="px-3" href="{% url 'user_following_list' author=author %}">
+                    <a style="color: black" class="px-3" href="{% url 'user_following_list' author=author %}">
                         {{ author_following_count }} following
                     </a>
                     {% if request.user != author %}
