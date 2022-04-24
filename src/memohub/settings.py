@@ -51,7 +51,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "crispy_forms",
     "mem",
-    "follow_system",
 ]
 
 MIDDLEWARE = [
@@ -91,11 +90,11 @@ WSGI_APPLICATION = 'memohub.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'HOST': env.str('POSTGRES_HOST'),
-        'NAME': env.str('POSTGRES_DB'),
-        'USER': env.str('POSTGRES_USER'),
-        'PASSWORD': env.str('POSTGRES_PASSWORD'),
-        'PORT': env.str('POSTGRES_PORT'),
+        'HOST': env.str('POSTGRES_HOST', 'bla'),
+        'NAME': env.str('POSTGRES_DB', 'bla'),
+        'USER': env.str('POSTGRES_USER', 'bla'),
+        'PASSWORD': env.str('POSTGRES_PASSWORD', 'bla'),
+        'PORT': env.str('POSTGRES_PORT', 'bla'),
     }
 }
 
