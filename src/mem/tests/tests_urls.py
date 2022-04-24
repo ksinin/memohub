@@ -1,10 +1,6 @@
-import unittest
-from unittest import TestCase
-from django.test import Client
 from django.test import SimpleTestCase
 from django.urls import reverse, resolve
 
-from mem.models import Mem
 from mem.views import AddMemView, YourMemView, DeleteMemView, EditMemView, MemLikeView, UserFollowingView, \
     UserFollowersView, FollowToggleUserView
 
@@ -16,7 +12,7 @@ class TestUrls(SimpleTestCase):
         self.assertEqual(resolve(url).func.view_class, AddMemView)
 
     def test_yourmemes_url_resolves(self):
-        url = reverse('yourmemes', args=[self.id])
+        url = reverse('yourmemes', args=[1])
         self.assertEqual(resolve(url).func.view_class, YourMemView)
 
     def test_deletemem_url_resolves(self):
