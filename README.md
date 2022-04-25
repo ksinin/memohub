@@ -20,6 +20,7 @@
 - `factory-boy 3.2.1`
 - `jQuery Core 3.6.0 `
 - `Poetry 1.2 `
+- `Docker 20.10. 7 `
 
 # memohub includes:
 
