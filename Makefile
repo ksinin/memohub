@@ -11,11 +11,14 @@ test:
 	docker-compose run app ./manage.py test
 
 restart-app:
-	docker restart memohub_app
+	docker restart memohub
 
 shell:
 	docker-compose run app ./manage.py shell
 
 bash:
-	docker exec -it memohub_app sh
+	docker exec -it memohub sh
+
+cs:
+	docker-compose run app ./manage.py createsuperuser
 
