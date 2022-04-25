@@ -16,7 +16,7 @@
 ### memohub includes:
 
 * Registration, login and logout:
-* ![img.png](src/images/img.png)
+* ![img.png](https://github.com/ksinin/memohub/raw/main/src/images/img.png)
 * ![img_1.png](src/images/img_1.png)
 * adding memes by adding a link with the ability to add a description:
 * ![img_7.png](src/images/img_7.png)
