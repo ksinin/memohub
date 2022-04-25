@@ -21,7 +21,7 @@
 ## Adding memes by adding a link with the ability to add a description:
 * ![img_7.png](src/images/img_7.png)
 ## Editing description and deleting mem:
-* ![img_1.png](img_1.png)
+* ![img_1.png](src/images/img_1111.png)
 ## User profile:
 * ![img_3.png](src/images/img_3.png)
 ## Subscriptions and subscribers system:
@@ -30,6 +30,6 @@
 ## Like/ unlike system:
 * ![img_6.png](src/images/img_6.png)
 ## User feed options:
-* ![img.png](img.png)
+* ![img.png](src/images/img_11.png)
 <p style="text-align: center"><h1>Please enjoy it =)</h1></p>
 
