@@ -13,17 +13,19 @@
 - `Django framework`
 - `PostgreSQL`
 
-### memohub includes:
+# memohub includes:
 
-* Registration, login and logout:
+## Registration, login and logout:
 * ![img.png](https://github.com/ksinin/memohub/raw/main/src/images/img.png)
 * ![img_1.png](src/images/img_1.png)
-* adding memes by adding a link with the ability to add a description:
+## Adding memes by adding a link with the ability to add a description:
 * ![img_7.png](src/images/img_7.png)
-* User profile:
+## User profile:
 * ![img_3.png](src/images/img_3.png)
-* implemented subscriptions and subscribers system:
+## Subscriptions and subscribers system:
 * ![img_4.png](src/images/img_4.png)
 * ![img_5.png](src/images/img_5.png)
-* implemented like/ unlike system:
+## Like/ unlike system:
 * ![img_6.png](src/images/img_6.png)
+
+
