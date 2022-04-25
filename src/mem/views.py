@@ -89,6 +89,10 @@ class YourMemView(View):
     template_name = 'yourmemes.html'
 
     def get(self, request, author):
+        """
+        Эта функция делает то то и то то
+        и бла и бла
+        """
         author = User.objects.get(username=author)
         author_followers = User.objects.filter(following__in=author.followers.all()).order_by(
             '-following__created_at') if author.followers.all() else []
