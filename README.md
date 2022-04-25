@@ -10,8 +10,16 @@
 - ... *list of all available commands you can see in `Makefile`*
 
 ### Built with:
-- `Django framework`
-- `PostgreSQL`
+- `Python 3.8`
+- `Django 4.0.3`
+- `Postgres:14-alpine `
+- `HTML 5`
+- `CSS 2.1`
+- `Bootstrap 5`
+- `django-crispy-forms 1.14.0`
+- `factory-boy 3.2.1`
+- `jQuery Core 3.6.0 `
+- `Poetry 1.2 `
 
 # memohub includes:
 
