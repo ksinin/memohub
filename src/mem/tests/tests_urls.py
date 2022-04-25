@@ -40,18 +40,5 @@ class TestUrls(SimpleTestCase):
         self.assertEqual(resolve(url).func.view_class, FollowToggleUserView)
 
 
-# class ViewsTestCase(TestCase):
-#
-#     """The index page loads properly"""
-#
-#     client = Client()
-#
-#     def test_addmem_url_loads_properly(self):
-#         response = self.client.get(reverse('addmem'))
-#         self.assertEqual(response.status_code, 200)
-#
-#     def test_yourmemes_url_loads_properly(self):
-#         response = self.client.get(reverse('yourmemes', args=[self.userName]))
-#         self.assertEqual(response.status_code, 200)
 
 
