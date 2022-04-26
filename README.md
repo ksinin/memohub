@@ -12,7 +12,7 @@
 ### Built with:
 - `Python 3.8`
 - `Django 4.0.3`
-- `Postgres:14-alpine `
+- `Postgres 14-alpine `
 - `HTML 5`
 - `CSS 2.1`
 - `Bootstrap 5`
@@ -20,7 +20,7 @@
 - `factory-boy 3.2.1`
 - `jQuery Core 3.6.0 `
 - `Poetry 1.2 `
-- `Docker 20.10. 7 `
+- `Docker 20.10.7 `
 
 # memohub includes:
 
